@@ -1,11 +1,21 @@
 package main
 
 import (
-	"fmt"
+    "fmt"
+	"net/http"
+	// "log"
 )
 
-func main(){
-	fmt.Println(Hello World!)
+func handlerFunc(w http.ResponseWriter, r *http.Request){
+	fmt.Fprint(w, "<h1> Welcome to the twitter Statics </h1>")
+}
 
-	// Here Server code will reside
+func main() {
+	
+	//Go server resides here 
+	http.HandleFunc("/", handlerFunc)
+	http.ListenAndServe(":8080", nil)
+	// if err := http.ListenAndServe(":8080", nil); err != nil {
+	// 	log.Fatal("ListenAndServe: ", err)
+	// }
 }
