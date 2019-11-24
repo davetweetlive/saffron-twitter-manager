@@ -1,7 +1,9 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
+	"database/sql"
+	_"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"net/http"
 	"html/template"
@@ -10,6 +12,8 @@ import (
 var templates *template.Template
 
 func main() {
+	connectToTheDatabase()
+	
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 
 	r := mux.NewRouter()
@@ -17,10 +21,25 @@ func main() {
 
 	http.Handle("/", r)
 	http.ListenAndServe(":8080", nil)
+
+
 }
 
 
+// Mysql database connection db open db close, earror handle and success notification on terminal
+func connectToTheDatabase()  {
+	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/dbname")
+	if err != nil{
+		panic(err.Error())
+	}
+	defer db.Close()
+	fmt.Println("Successful")
+}
+
+
+// Index Page which handles all the method and route performed on the index page
 func indexHandler(w http.ResponseWriter, r *http.Request)  {
+	fmt.Println("Welcome to index page")
 	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
