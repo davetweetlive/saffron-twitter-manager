@@ -3,6 +3,8 @@ package config
 import (
 	"fmt"
 
+	"github.com/dghubble/go-twitter/twitter"
+	"github.com/dghubble/oauth1"
 	"github.com/spf13/viper"
 )
 
@@ -41,25 +43,25 @@ func (c Credentials) GetCredentials() Credentials {
 	}
 
 	// Reading variables using the model
-	fmt.Println("Reading variables using the model..")
-	fmt.Println("Database is\t", configuration.KeysAndTokens.ConsumerKey)
-	fmt.Println("Port is\t\t", configuration.Server.Port)
+	// fmt.Println("Reading variables using the model..")
+	// fmt.Println("Database is\t", configuration.KeysAndTokens.ConsumerKey)
+	// fmt.Println("Port is\t\t", configuration.Server.Port)
 	cd := Credentials{
 		ConsumerKey:    configuration.KeysAndTokens.ConsumerKey,
-		ConsumerSecret: configuration.KeysAndTokens.ConsumerKey,
-		AccessToken:    configuration.KeysAndTokens.ConsumerKey,
-		AccessSecret:   configuration.KeysAndTokens.ConsumerKey,
+		ConsumerSecret: configuration.KeysAndTokens.ConsumerSecret,
+		AccessToken:    configuration.KeysAndTokens.AccessToken,
+		AccessSecret:   configuration.KeysAndTokens.AccessSecret,
 	}
 	return cd
+}
 
-	// }
-	// fmt.Println("EXAMPLE_PATH is\t", configuration.EXAMPLE_PATH)
-	// fmt.Println("EXAMPLE_VAR is\t", configuration.EXAMPLE_VAR)
+func TwitterClient() *twitter.Client {
+	someToken := Credentials{}
+	config := oauth1.NewConfig(someToken.GetCredentials().ConsumerKey, someToken.GetCredentials().ConsumerSecret)
+	token := oauth1.NewToken(someToken.GetCredentials().AccessToken, someToken.GetCredentials().AccessSecret)
+	httpClient := config.Client(oauth1.NoContext, token)
 
-	// // Reading variables without using the model
-	// fmt.Println("\nReading variables without using the model..")
-	// fmt.Println("Database is\t", viper.GetString("database.dbname"))
-	// fmt.Println("Port is\t\t", viper.GetInt("server.port"))
-	// fmt.Println("EXAMPLE_PATH is\t", viper.GetString("EXAMPLE_PATH"))
-	// fmt.Println("EXAMPLE_VAR is\t", viper.GetString("EXAMPLE_VAR"))
+	// Twitter client
+	client := twitter.NewClient(httpClient)
+	return client
 }
