@@ -2,9 +2,10 @@ package main
 
 import (
 	"twitter-stat/controller"
-	"twitter-stat/model"
+	// "twitter-stat/model"
 	"log"
 	"net/http"
+
 	"github.com/gorilla/mux"
 )
 

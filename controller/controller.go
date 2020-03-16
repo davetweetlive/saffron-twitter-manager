@@ -1,19 +1,15 @@
 package controller
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"twitter-stat/config/db"
-	"twitter-stat/model"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"twitter-stat/model"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	// "github.com/mongodb/mongo-go-driver/bson"
-    "go.mongodb.org/mongo-driver/bson"
-
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -31,15 +27,15 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection, err := db.GetDBCollection()
+	// collection, err := db.GetDBCollection()
 
 	if err != nil {
 		res.Error = err.Error()
 		json.NewEncoder(w).Encode(res)
 		return
 	}
-	var result model.User
-	err = collection.FindOne(context.TODO(), bson.D{{"username", user.Username}}).Decode(&result)
+	// var result model.User
+	// err = collection.FindOne(context.TODO(), bson.D{{"username", user.Username}}).Decode(&result)
 
 	if err != nil {
 		if err.Error() == "mongo: no documents in result" {
@@ -52,7 +48,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			user.Password = string(hash)
 
-			_, err = collection.InsertOne(context.TODO(), user)
+			// _, err = collection.InsertOne(context.TODO(), user)
 			if err != nil {
 				res.Error = "Error While Creating User, Try Again"
 				json.NewEncoder(w).Encode(res)
@@ -83,7 +79,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	collection, err := db.GetDBCollection()
+	// collection, err := db.GetDBCollection()
 
 	if err != nil {
 		log.Fatal(err)
@@ -91,7 +87,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	var result model.User
 	var res model.ResponseResult
 
-	err = collection.FindOne(context.TODO(), bson.D{{"username", user.Username}}).Decode(&result)
+	// err = collection.FindOne(context.TODO(), bson.D{{"username", user.Username}}).Decode(&result)
 
 	if err != nil {
 		res.Error = "Invalid username"
