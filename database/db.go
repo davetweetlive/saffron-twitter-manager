@@ -9,7 +9,7 @@ import (
 )
 
 func MysqlConnect() (*sql.DB, error) {
-	db, err := sql.Open("mysql", "user:Password@/database_name")
+	db, err := sql.Open("mysql", "root:Megamind@1@/twitter-stat")
 
 	if err != nil {
 		log.Fatal("Couldn't connect to the database!")
