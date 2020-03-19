@@ -37,19 +37,22 @@ func checkIfTableExist() {
 	fmt.Println("The database connection has been established!", conn)
 
 	// To check if the table exists or not if the table exists don't create a new table
-	tableExists, err := conn.Query("show tables like `account`;")
+	tableExists, err := conn.Query("SELECT 1 FROM `account` LIMIT 1;")
 	if err != nil {
 		log.Fatal("Couldn't prcess the query to check for the table existance!")
 	}
 	if tableExists != nil {
-		selDB, err := conn.Query("CREATE TABLE `account` (`id` int(6) unsigned NOT NULL AUTO_INCREMENT, `username` varchar(30) NOT NULL, `password` varchar(30) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;")
+		// 	selDB, err := conn.Query("CREATE TABLE `account` (`id` int(6) unsigned NOT NULL AUTO_INCREMENT, `username` varchar(30) NOT NULL, `password` varchar(30) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;")
 
-		if err != nil {
-			log.Fatal("Couldn't create a table!")
-		}
-		fmt.Println(selDB)
-	} else {
-		fmt.Println("The table exists and it's being used for info access!")
+		// 	if err != nil {
+		// 		log.Fatal("Couldn't create a table!")
+		// 	}
+		// 	fmt.Println(selDB)
+		// } else {
+		// 	fmt.Println("The table exists and it's being used for info access!")
+		fmt.Println("Count is 0!")
 	}
+	fmt.Println("Count is nonzero and +!")
+	fmt.Println(tableExists)
 
 }
