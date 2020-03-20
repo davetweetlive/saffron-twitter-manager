@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"time"
+	"twitter-stat/utility"
 )
 
 type templateType struct {
@@ -18,6 +19,7 @@ func main() {
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
+	utility.CheckIfTableExist()
 	dt := time.Now()
 	p := templateType{title: "Twitter Stat", time: dt.String()}
 	t, _ := template.ParseFiles("template/index.html")
