@@ -1,4 +1,4 @@
-package database
+package models
 
 import (
 	"database/sql"
@@ -21,20 +21,21 @@ var dbCred = DBCredential{
 	DB:       "mysql",
 	Database: "twitter-stat",
 	Host:     "localhost",
-	Port:     3606,
+	Port:     3306,
 	Username: "root",
 	Password: "Megamind@1",
 }
 
-func MysqlConnect() (*sql.DB, error) {
+func EstablishDBConnection() (*sql.DB, error) {
+	// Mysql satabase connection string formatted
 	dbConnString := fmt.Sprintf("%s:%s@/%s", dbCred.Username, dbCred.Password, dbCred.Database)
-	fmt.Println(dbConnString)
 
+	//Connect to mySql database
 	db, err := sql.Open("mysql", dbConnString)
-	//  "root:Megamind@1@/twitter-stat"
 	if err != nil {
 		log.Fatal("Couldn't connect to the database!")
 	}
-	fmt.Printf("%T\n", db)
+
+	// Return type *sql.DB and err (if any)
 	return db, err
 }

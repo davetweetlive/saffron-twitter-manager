@@ -3,12 +3,12 @@ package utility
 import (
 	"fmt"
 	"log"
-	"twitter-stat/database"
+	"twitter-stat/models"
 )
 
 func CheckIfTableExist() {
 	// Establish the database connection
-	db, err := database.MysqlConnect()
+	db, err := models.EstablishDBConnection()
 	defer db.Close()
 	if err != nil {
 		log.Fatal("Couldn't connect to the database!")
