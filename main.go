@@ -22,6 +22,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	utility.CheckIfTableExist()
 	dt := time.Now()
 	p := templateType{title: "Twitter Stat", time: dt.String()}
-	t, _ := template.ParseFiles("template/index.html")
-	t.Execute(w, p)
+	temlt, _ := template.ParseFiles("template/index.html")
+	temlt.Execute(w, p)
 }
