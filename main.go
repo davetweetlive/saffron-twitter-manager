@@ -1,11 +1,8 @@
 package main
 
 import (
-	"html/template"
-	"log"
 	"net/http"
-	"time"
-	"twitter-stat/utility"
+	"twitter-stat/views"
 )
 
 type templateType struct {
@@ -15,23 +12,7 @@ type templateType struct {
 
 func main() {
 
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/signup", signUpHandler)
+	http.HandleFunc("/login", views.LoginHandler)
+	http.HandleFunc("/signup", views.SignUpHandler)
 	http.ListenAndServe(":8000", nil)
-}
-
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-	utility.CheckIfTableExist()
-	dt := time.Now()
-	p := templateType{title: "Twitter Stat", time: dt.String()}
-	temlt, _ := template.ParseFiles("template/index.html")
-	temlt.Execute(w, p)
-}
-
-func signUpHandler(w http.ResponseWriter, r *http.Request) {
-	tmplt, err := template.ParseFiles("template/signup.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-	tmplt.Execute(w, nil)
 }
