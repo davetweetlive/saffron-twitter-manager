@@ -3,6 +3,8 @@ package views
 import (
 	"fmt"
 	"net/http"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -29,14 +31,18 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
 		}
-		fmt.Fprintf(w, "Post from website! r.PostFrom = %v\n", r.PostForm)
+		// fmt.Fprintf(w, "Post from website! r.PostFrom = %v\n", r.PostForm)
 		username := r.FormValue("username")
 		emailID := r.FormValue("email_id")
 		password := r.FormValue("password")
 
+		encpass, err := bcrypt.GenerateFromPassword([]byte(password), 5)
+		if err != nil {
+			fmt.Println("Couldn't encrypt")
+		}
 		fmt.Println(username)
 		fmt.Println(emailID)
-		fmt.Println(password)
+		fmt.Println(string(encpass))
 	default:
 		fmt.Fprintf(w, "Sorry, only GET and POST methods are supported.")
 	}
