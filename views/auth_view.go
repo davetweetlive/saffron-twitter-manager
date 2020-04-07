@@ -48,3 +48,18 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		http.ServeFile(w, r, "templates/home.html")
+	} else if r.Method == "POST" {
+		fmt.Println("Write the login function!")
+	} else {
+		fmt.Println("We couldn't find any get or a post method!")
+	}
+	// 	// utility.CheckIfTableExist()
+	// 	temlt, _ := template.ParseFiles("template/index.html")
+	// 	temlt.Execute(w, nil)
+}
+
+

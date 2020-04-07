@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	fileServer := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	// db, err := models.EstablishDBConnection()
 	// if err != nil {
 	// 	fmt.Println("DB connection denied!")
@@ -13,5 +15,6 @@ func main() {
 	// fmt.Println(db)
 	http.HandleFunc("/login", views.LoginHandler)
 	http.HandleFunc("/signup", views.SignUpHandler)
+	http.HandleFunc("/", views.IndexHandler)
 	http.ListenAndServe(":8000", nil)
 }
