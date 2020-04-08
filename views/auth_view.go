@@ -3,10 +3,24 @@ package views
 import (
 	"fmt"
 	"net/http"
+	"text/template"
+	"twitter-stat/models"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
+type LoginInfo struct {
+	username      string
+	authenticated bool
+}
+
+var tmplt *template.Template
+
+func init() {
+	tmplt = template.Must(template.ParseGlob("templates/*.html"))
+}
+
+// type loggedin
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "templates/index.html")
@@ -36,13 +50,34 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		emailID := r.FormValue("email_id")
 		password := r.FormValue("password")
 
+		fmt.Printf("%T\n", username)
+		fmt.Printf("%T\n", emailID)
+		fmt.Printf("%T\n", password)
+
 		encpass, err := bcrypt.GenerateFromPassword([]byte(password), 5)
 		if err != nil {
 			fmt.Println("Couldn't encrypt")
 		}
-		fmt.Println(username)
-		fmt.Println(emailID)
-		fmt.Println(string(encpass))
+		fmt.Printf("%T\n", string(encpass[:]))
+		db, err := models.EstablishDBConnection()
+		defer db.Close()
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// _, err = db.Query(`INSERT INTO TABLE VALUES(` + username + `,` + emailID + `, ` + string(encpass[:]) + `)`)
+		_, err = db.Query(`CREATE TABLE "User" (
+			"id" INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			"username" VARCHAR(50) NOT NULL,
+			"email" VARCHAR(50) NOT NULL,
+			"passwd" VARCHAR(50),
+			reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+			)`)
+		if err != nil {
+			fmt.Println(err)
+		}
+
 	default:
 		fmt.Fprintf(w, "Sorry, only GET and POST methods are supported.")
 	}
@@ -62,4 +97,13 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	// 	temlt.Execute(w, nil)
 }
 
-
+func TweetStreaming(w http.ResponseWriter, r *http.Request) {
+	info := LoginInfo{
+		username:      "na",
+		authenticated: false,
+	}
+	err := tmplt.ExecuteTemplate(w, "home.html", info)
+	if err != nil {
+		fmt.Println(err)
+	}
+}

@@ -46,3 +46,16 @@ func SqlConnectionString() string {
 
 	return dbConnString
 }
+
+func CreateUserTable() {
+	query := `CREATE TABLE "User" (
+		"id" INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+		"username" VARCHAR(50) NOT NULL,
+		"email" VARCHAR(50) NOT NULL,
+		"passwd" VARCHAR(50),
+		reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+		)`
+
+	// selDB, err := db.Query("CREATE TABLE `user` (`id` int(6) unsigned NOT NULL AUTO_INCREMENT, `user` varchar(30) NOT NULL, `password` varchar(30) NOT NULL, `first_name` varchar(50), `last_name` varchar(50), `email` varchar(50), PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;")
+	fmt.Println(query)
+}
