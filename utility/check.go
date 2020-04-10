@@ -41,3 +41,23 @@ func CheckIfTableExist() {
 	// // be careful deferring Queries if you are using transactions
 	// defer insert.Close()
 }
+
+func CreateUsertable() {
+	db, err := models.EstablishDBConnection()
+	defer db.Close()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	_, err = db.Query(`CREATE TABLE "User" (
+			"id" INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			"username" VARCHAR(50) NOT NULL,
+			"email" VARCHAR(50) NOT NULL,
+			"passwd" VARCHAR(50),
+			reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+			)`)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
