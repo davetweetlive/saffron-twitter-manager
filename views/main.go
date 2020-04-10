@@ -25,7 +25,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("DB is connected!", db)
+	defer db.Close()
 	// Static file server
 	fileServer := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))

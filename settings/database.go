@@ -7,6 +7,9 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type DBStruct struct {
@@ -30,7 +33,7 @@ func SqlConnectionString() string {
 		fmt.Println(err)
 	}
 
-	fmt.Println("Successfully Opened dbcred.json")
+	// fmt.Println("Successfully Opened dbcred.json")
 	// defer the closing of our jsonFile so that we can parse it later on
 	defer jsonFile.Close()
 
@@ -39,25 +42,20 @@ func SqlConnectionString() string {
 	// we initialize our dbStruct struct
 	var dbStruct DBStruct
 
-	// we unmarshal our byteArray which contains our
-	// jsonFile's content into 'dbStruct' which we defined above
 	json.Unmarshal(byteValue, &dbStruct)
 
-	dbConnString := fmt.Sprintf("%s:%s@/%s", dbStruct.Db.Username, dbStruct.Db.Password, dbStruct.Db.Database)
-	fmt.Println(dbConnString)
+	dbConnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbStruct.Db.Username, dbStruct.Db.Password, dbStruct.Db.Host, strconv.Itoa(dbStruct.Db.Port), dbStruct.Db.Database)
+
 	return dbConnString
 }
 
 func EstablishDBConnection() (*sql.DB, error) {
 
-	//Connect to mySql database SqlConnectionString() func sends connection string
-	// db, err := sql.Open("mysql", "root:Megamind@1@/twitter-stat")
-	db, err := sql.Open("mysql", "root:Megamind@1@tcp(127.0.0.1)/twitter-stat")
-	// username:password@protocol(address)/dbname
+	db, err := sql.Open("mysql", SqlConnectionString())
+
 	if err != nil {
 		log.Fatal("Couldn't connect to the database!")
 	}
-	fmt.Println("DB has been setup!")
-	// Return type *sql.DB and err (if any)
+
 	return db, err
 }
