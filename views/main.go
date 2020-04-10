@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 	"text/template"
 	"tweet_olivia/settings"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type LoggedInUser struct {
@@ -45,24 +48,42 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func SignupHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		tmplt.ExecuteTemplate(w, "signup.html", nil)
-	} else if r.Method == "POST" {
-		// Call ParseForm() to parse the raw query and update r.PostForm and r.Form.
-		if err := r.ParseForm(); err != nil {
-			fmt.Fprintf(w, "ParseForm() err: %v", err)
+func SignupHandler(res http.ResponseWriter, req *http.Request) {
+	db, _ := settings.EstablishDBConnection()
+	if req.Method != "POST" {
+		http.ServeFile(res, req, "templates/signup.html")
+		return
+	}
+
+	username := req.FormValue("username")
+	password := req.FormValue("password")
+
+	var user string
+
+	err := db.QueryRow("SELECT username FROM users WHERE username=?", username).Scan(&user)
+	fmt.Println("Getting Error Information!")
+	fmt.Println(err)
+	switch {
+	case err == sql.ErrNoRows:
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+		if err != nil {
+			http.Error(res, "Server error, unable to create your account.", 500)
 			return
 		}
-		// fmt.Fprintf(w, "Post from website! r.PostFrom = %v\n", r.PostForm)
-		username := r.FormValue("username")
-		emailID := r.FormValue("email_id")
-		password := r.FormValue("password")
 
-		fmt.Printf("%T\n", username)
-		fmt.Printf("%T\n", emailID)
-		fmt.Printf("%T\n", password)
+		_, err = db.Exec("INSERT INTO users(username, password) VALUES(?, ?)", username, hashedPassword)
+		if err != nil {
+			http.Error(res, "Server error, unable to create your account.", 500)
+			return
+		}
 
+		res.Write([]byte("User created!"))
+		return
+	case err != nil:
+		http.Error(res, "Server error, unable to create your account.", 500)
+		return
+	default:
+		http.Redirect(res, req, "/", 301)
 	}
 }
 
