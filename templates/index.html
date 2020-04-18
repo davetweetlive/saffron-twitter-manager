@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <title></title>
+    <title>{{.Title}}</title>
     <link rel="stylesheet" href="/static/main.css">
 </head>
 
@@ -19,6 +19,7 @@
                     class="bts-a">Don't
                     have an account? Sign up!</a>
                 <div class="bts">
+
                     <!-- <a href="#" class="fblogin social"><i class="fa fa-facebook"></i><span>Sign in with
                             Facebook</span></a> -->
                     <a href="#" class="twlogin social"><i class="fa fa-twitter"></i><span>Sign in with
@@ -44,6 +45,10 @@
             </div>
         </div>
     </section>
+
+    <footer>
+        <p>Powered by {{.PoweredBy}}</p>
+    </footer>
 </body>
 
 </html>

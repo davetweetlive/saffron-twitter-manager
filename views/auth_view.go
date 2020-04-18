@@ -14,6 +14,11 @@ type LoginInfo struct {
 	authenticated bool
 }
 
+type TemplateInformation struct {
+	Title     string
+	PoweredBy string
+}
+
 var tmplt *template.Template
 
 func init() {
@@ -22,8 +27,23 @@ func init() {
 
 // type loggedin
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	tempInfo := TemplateInformation{
+		Title:     "Login to Twitter Handler",
+		PoweredBy: "Saffron Coders",
+	}
 	if r.Method == "GET" {
-		http.ServeFile(w, r, "templates/index.html")
+		// http.ServeFile(w, r, "templates/index.html")
+
+		t, err := template.ParseFiles("templates/index.html")
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		t.Execute(w, tempInfo)
+		// err := tmplt.Execute(w)
+		// if err != nil {
+		// 	panic(err)
+		// }
 	} else if r.Method == "POST" {
 		fmt.Println("Write the login function!")
 	} else {
