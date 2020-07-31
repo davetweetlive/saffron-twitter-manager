@@ -1,49 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <title></title>
-    <link rel="stylesheet" href="/static/css/main.css">
+    <title>Twitter SignIn</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- load bulma css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- load fontawesome -->
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
 </head>
 
-
-
-<body id="myId">
-    <section class="register-account">
-        <div class="signform">
-            <div class="left"><a href="/signup" style="float:right;margin-right:35px;font-size: 0.9em;"
-                    class="bts-a">Don't
-                    have an account? Sign up!</a>
-                <div class="bts">
-                    <!-- <a href="#" class="fblogin social"><i class="fa fa-facebook"></i><span>Sign in with
-                            Facebook</span></a> -->
-                    <a href="#" class="twlogin social"><i class="fa fa-twitter"></i><span>Sign in with
-                            Twitter</span></a>
-                    <!-- <a href="#" class="gplogin social"><i class="fa fa-google-plus"></i><span>Sign in with
-                            Google</span></a> -->
-                </div>
-            </div>
-            <div class="right">
-                <div class="headit">
-                    <h4>Login To Your Account</h4>
-                </div>
-                <div class="form">
-                    <form class="login-form" id="login-form" method="/">
-                        <input type="text" placeholder="User Name" />
-                        <input type="password" placeholder="Password" />
-                        <input class="subbt" type="submit" value="Sign In" style="border:none;" />
-                    </form>
-                    <input type="checkbox" id="remember" name="remember"><span style="color:#b6b6b6;font-size: 0.9em;">
-                        Remember Me</span><a href="#">Forgot your
-                        password?</a>
-                </div>
-            </div>
+<body>
+    <div class="container">
+        <div class="jumbotron text-center text-success">
+            <h1><span class="fa fa-lock"></span> Social Authentication</h1>
+            <p>Login or Register with:</p>
+            <a href="/auth/twitter" class="btn btn-danger"><span class="fa fa-twitter"></span> SignIn with Twitter</a>
         </div>
-    </section>
+    </div>
 </body>
 
 </html>
